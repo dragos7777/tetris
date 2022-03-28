@@ -2,7 +2,7 @@
   "short_name":"Tetris App",
   "name": "Tetris",
  
-  "start_url": ".",
+  "start_url": "https://dragos7777.github.io/tetris/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
