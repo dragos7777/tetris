@@ -5,8 +5,16 @@ const ROWS = 15,
 const BEEP = new Audio("./beep.mp3");
 const STARTINDEX = [0, 5];
 
-const PIECES_TYPE = ["s", "o", "i"];
-const COLORS = { s: "green", o: "blue", i: "red" };
+const PIECES_TYPE = ["s", "o", "i", "l", "j", "z", "t"];
+const COLORS = {
+  s: "#42B642",
+  o: "#F7D308",
+  i: "#31C7EF",
+  l: "#FF9030",
+  j: "#5A65AD",
+  z: "#EF2029",
+  t: "#AD4D9C",
+};
 
 class Tile {
   constructor(div, x, y) {
