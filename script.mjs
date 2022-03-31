@@ -1,12 +1,12 @@
-import PIECES from "./modules/pieces.mjs"
+import PIECES from "./modules/pieces.mjs";
 
 const ROWS = 15,
   COLS = 10;
 const BEEP = new Audio("./beep.mp3");
 const STARTINDEX = [0, 5];
 
-const PIECES_TYPE = ["s","o","i"];
-const COLORS = {"s":"green","o":"blue","i":"red"};
+const PIECES_TYPE = ["s", "o", "i"];
+const COLORS = { s: "green", o: "blue", i: "red" };
 
 class Tile {
   constructor(div, x, y) {
@@ -32,7 +32,7 @@ class Piece {
     this.type = PIECES_TYPE[Math.floor(Math.random() * PIECES_TYPE.length)];
     this.rotation = 0;
     this.piece = PIECES[this.type][0];
-    this.color= COLORS[this.type]
+    this.color = COLORS[this.type];
   }
 
   setPieceRotation() {
@@ -49,6 +49,7 @@ class Piece {
 class Tetris {
   constructor(container, rows, cols) {
     this.offset = STARTINDEX;
+    this.score = 0;
     this.items = Array(rows)
       .fill()
       .map(() => Array(cols).fill());
@@ -58,6 +59,11 @@ class Tetris {
     this.startButton = document.createElement("button");
     this.startButton.innerText = "START";
     this.container.append(this.startButton);
+
+    this.scoreLabel = document.createElement("label");
+    this.scoreLabel.innerText = "SCORE: " + this.score;
+    this.container.append(this.scoreLabel);
+
     this.startButton.addEventListener("click", () => {
       this.startGame();
     });
@@ -82,20 +88,16 @@ class Tetris {
   handleKeyPress(event) {
     switch (event.keyCode) {
       case 37:
-        if(this.state==="moving")
-        this.movePiece("left");
+        if (this.state === "moving") this.movePiece("left");
         break;
       case 38:
-        if(this.state==="moving")
-        this.rotatePiece();
+        if (this.state === "moving") this.rotatePiece();
         break;
       case 39:
-        if(this.state==="moving")
-        this.movePiece("right");
+        if (this.state === "moving") this.movePiece("right");
         break;
       case 40:
-        if(this.state==="moving")
-        this.movePiece("down");
+        if (this.state === "moving") this.movePiece("down");
         break;
     }
   }
@@ -126,7 +128,8 @@ class Tetris {
     if (this.checkRenderPiece(offset)) {
       this.offset = offset;
       this.renderPiece();
-      if (direction === "down")       BEEP.play();
+      if (direction === "down") {
+      } //BEEP.play();}
     } else {
       this.renderPiece();
       if (direction === "down") this.state = "render";
@@ -185,14 +188,12 @@ class Tetris {
       }
     } else if (this.state === "moving") {
       this.movePiece("down");
-     
     }
   }
 
   startGame() {
     this.interval = setInterval(() => {
       this.gameTick();
-
     }, 400);
   }
 
@@ -207,6 +208,8 @@ class Tetris {
       }
       if (del) {
         console.log("tetris..........", i);
+        this.score += 100;
+        this.scoreLabel.innerText = "SCORE:" + this.score;
         for (let k = i; k > 0; k--) {
           for (let j = 0; j < COLS; j++) {
             console.log("tertis", k, j);
