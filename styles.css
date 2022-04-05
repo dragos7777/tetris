@@ -32,3 +32,19 @@ h3 {
   color: black;
   background-color: #edeef3;
 }
+
+.phone {
+  display: none;
+}
+
+@media only screen and (max-width: 800px) {
+  .tetris-app {
+    display: none;
+  }
+
+  .phone {
+    display: block;
+    text-align: center;
+    background-color: #edeef3;
+  }
+}
