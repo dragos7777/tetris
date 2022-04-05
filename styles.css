@@ -21,3 +21,14 @@ button {
   color: blue;
   background-color: aqua;
 }
+
+body {
+  background-image: url("./tetris-bg.jpg");
+}
+
+label,
+h3 {
+  font-size: 1.25rem;
+  color: black;
+  background-color: #edeef3;
+}

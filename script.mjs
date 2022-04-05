@@ -63,7 +63,7 @@ class Tetris {
       .map(() => Array(cols).fill());
     this.container = container;
     this.container.className = "tetris-app";
-    this.state = "render"; // render - generate a new pice next game tick, moving - move piece down next tick, over -geme over stop the game next tick
+    this.state = "notStarted"; // render - generate a new pice next game tick, moving - move piece down next tick, over -geme over stop the game next tick
     this.startButton = document.createElement("button");
     this.startButton.innerText = "START";
     this.container.append(this.startButton);
@@ -73,12 +73,23 @@ class Tetris {
     this.container.append(this.scoreLabel);
 
     this.startButton.addEventListener("click", () => {
-      this.startGame();
+      if (this.state === "notStarted") {
+        this.state = "render";
+        this.startGame();
+      }
+
+      if (this.state === "over") {
+        this.state = "render";
+        this.clearBoard();
+        this.score = 0;
+        this.scoreLabel.innerText = "SCORE: " + 0;
+
+        this.startGame();
+      }
     });
 
     window.addEventListener("keydown", (event) => {
       this.handleKeyPress(event);
-      console.log(event.keyCode);
     });
 
     for (let [i, el] of this.items.entries()) {
@@ -192,7 +203,10 @@ class Tetris {
         this.renderPiece();
       } else {
         clearInterval(this.interval);
-        alert("game over");
+        this.state = "over";
+        this.startButton.innerText = "RESTART";
+        this.scoreLabel.innerText = "FINAL SCORE: " + this.score;
+        alert("Game Over!");
       }
     } else if (this.state === "moving") {
       this.movePiece("down");
@@ -215,12 +229,10 @@ class Tetris {
         }
       }
       if (del) {
-        console.log("tetris..........", i);
         this.score += 100;
         this.scoreLabel.innerText = "SCORE:" + this.score;
         for (let k = i; k > 0; k--) {
           for (let j = 0; j < COLS; j++) {
-            console.log("tertis", k, j);
             this.items[k][j].setBackground(
               this.items[k - 1][j].getBackground()
             );
@@ -229,8 +241,22 @@ class Tetris {
       }
     }
   }
+
+  clearBoard() {
+    let i = 0;
+    for (i = 0; i < ROWS; i++) {
+      for (let j = 0; j < COLS; j++) {
+        this.items[i][j].setBackground("black");
+      }
+    }
+  }
 }
 
 let div = document.createElement("div");
+let instr = document.createElement("h3");
+instr.innerText =
+  "Use left,right and down arrow keys to move the pieces and the up arrow key to rotate.";
+
 let tile = new Tetris(div, ROWS, COLS);
+div.appendChild(instr);
 document.body.append(div);
